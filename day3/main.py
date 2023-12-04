@@ -41,6 +41,17 @@ def get_num_from_coords(coords):
         num += chars[coord[0]][coord[1]]
     return int(num)
 
+def print_coords(coords, radius):
+    output = f'[{coords[0]}, {coords[1]}]\n'
+    for i in range(-radius, radius+1):
+        for j in range(-radius, radius+1):
+            if coords[0]+i >= len(chars) or coords[0]+i < 0 or coords[1]+j >= len(chars[0]) or coords[1]+j < 0: continue
+            output += chars[coords[0]+i][coords[1]+j]
+        output+="\n"
+    output+="==================="
+    print(output)
+
+
 
 for indice in indices_of_nums:
     if prev_num and (grouped_indices[-1][-1][1] == indice[1] - 1 and grouped_indices[-1][-1][0] == indice[0]):
@@ -59,6 +70,7 @@ for group in grouped_indices:
         gear_coord = gear_around_coord(coord[0],coord[1])
         if gear_coord:
             nums_with_gears.append((get_num_from_coords(group), gear_coord))
+            break
 
 counts = dict()
 for pair in nums_with_gears:
@@ -75,7 +87,7 @@ for num in nums_with_gears:
         gear_pairs[str(num[1])].append(num[0])
 
 for gear in gear_pairs.keys():
-    print(gear)
+    print_coords((int(gear[1:-1].split(', ')[0]),int(gear[1:-1].split(', ')[1])),3)
     engine_sum += gear_pairs[gear][0] * gear_pairs[gear][1]
 print(engine_sum)
 
