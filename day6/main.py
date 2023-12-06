@@ -1,17 +1,11 @@
 times = [57726992]
 records = [291117211762026]
 
+
 ways_to_win = [0]
 
 def do_race(press_time, max_time):
-    dist = 0
-    speed = 0
-    for i in range(max_time):
-        if i < press_time:
-            speed += 1
-        else:
-            dist += speed
-    return dist
+    return(press_time) * (max_time - press_time)
 
 
 for i in range(len(ways_to_win)):
