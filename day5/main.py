@@ -90,8 +90,15 @@ def part_two():
     lowest_seed = None
     for i in range(0,len(init_seeds),2):
         seeds = [int(init_seeds[i]) + x for x in range(int(init_seeds[i+1]))]
-        print(len(seeds))
-        print(seeds[0:5])
+        for seed in seeds:
+            print(f'seed: {seed}')
+            new = seed_to_loc(seed)
+            if not lowest or new < lowest:
+                lowest_seed = seed
+                lowest = new
+            print('===================')
+    print(lowest)
+
 
 
 def main():
