@@ -1,4 +1,5 @@
 filename = "input.txt"
+# filename = "test_input.txt"
 
 file = open(filename).read().splitlines()
 
@@ -10,12 +11,12 @@ water_to_light = {}
 light_to_temp = {}
 temp_to_humid = {}
 humid_to_location = {}
+
+maps = [seed_to_soil, soil_to_fert, fert_to_water, water_to_light, light_to_temp, temp_to_humid, humid_to_location]
 current_map = None
 
 count = 0
 for line in file:
-    print(f"Line {count}")
-    count+=1
     if(line.startswith('seeds')):
         init_seeds = [x for x in line.split(': ')[1].split(' ')]
         continue
@@ -42,23 +43,61 @@ for line in file:
         current_map = humid_to_location
         continue
     line = line.split(' ')
-    source = int(line[0])
-    dest = int(line[1])
+    source = int(line[1])
+    dest = int(line[0])
     length = int(line[2])
-    for i in range(source, source + length + 1):
-        if(i): print((i - source) / (length + 1))
-        for j in range(dest, dest + length + 1):
-            current_map[str(i)] = str(j)
-
-def get_loc_from_seed(seed):
-    return humid_to_location[temp_to_humid[light_to_temp[water_to_light[fert_to_water[soil_to_fert[seed_to_soil[seed]]]]]]]
+    current_map[f'{source}-{source+length}'] = dest
 
 lowest = None
 lowest_seed = None
-for i in init_seeds:
-    loc = int(get_loc_from_seed(i))
-    if lowest == None or loc < lowest:
-        lowest = loc
-        lowest_seed = i
 
-print(lowest_seed)
+def namestr(obj, namespace):
+    return [name for name in namespace if namespace[name] is obj]
+
+def seed_to_loc(seed):
+    curr_index = int(seed)
+    for x in maps:
+        print(namestr(x, globals()))
+        print(x)
+        found = False
+        for key in x.keys():
+            if found: continue
+            k = [int(k) for k in key.split('-')]
+            if(curr_index >= k[0] and curr_index <= k[1]):
+                print(k)
+                diff = abs(curr_index - k[0])
+                curr_index = x[key] + diff
+                found = True
+        print(curr_index)
+
+    return curr_index
+
+def part_one():
+    lowest = None
+    lowest_seed = None
+    for seed in init_seeds:
+        print(f'seed: {seed}')
+        new = seed_to_loc(seed)
+        if not lowest or new < lowest:
+            print(new)
+            lowest_seed = seed
+            lowest = new
+        print('===================')
+    print(lowest)
+
+def part_two():
+    lowest = None
+    lowest_seed = None
+    for i in range(0,len(init_seeds),2):
+        seeds = [int(init_seeds[i]) + x for x in range(int(init_seeds[i+1]))]
+        print(len(seeds))
+        print(seeds[0:5])
+
+
+def main():
+    # part_one()
+    part_two()
+
+
+if __name__ == '__main__':
+    main()
