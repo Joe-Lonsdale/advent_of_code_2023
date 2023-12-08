@@ -57,19 +57,14 @@ def namestr(obj, namespace):
 def seed_to_loc(seed):
     curr_index = int(seed)
     for x in maps:
-        print(namestr(x, globals()))
-        print(x)
         found = False
         for key in x.keys():
             if found: continue
             k = [int(k) for k in key.split('-')]
             if(curr_index >= k[0] and curr_index <= k[1]):
-                print(k)
                 diff = abs(curr_index - k[0])
                 curr_index = x[key] + diff
                 found = True
-        print(curr_index)
-
     return curr_index
 
 def part_one():
@@ -89,14 +84,12 @@ def part_two():
     lowest = None
     lowest_seed = None
     for i in range(0,len(init_seeds),2):
-        seeds = [int(init_seeds[i]) + x for x in range(int(init_seeds[i+1]))]
-        for seed in seeds:
-            print(f'seed: {seed}')
+        for seed in range(int(init_seeds[i]), int(init_seeds[i]) + int(init_seeds[i+1])):
+            if(seed % 100000 == 0): print((seed - int(init_seeds[i])) / (int(init_seeds[i+1])))
             new = seed_to_loc(seed)
             if not lowest or new < lowest:
                 lowest_seed = seed
                 lowest = new
-            print('===================')
     print(lowest)
 
 
