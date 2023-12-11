@@ -1,3 +1,4 @@
+import os
 filename = "input.txt"
 # filename = "test_input.txt"
 
@@ -29,7 +30,12 @@ def part_one():
         loop.append(next)
         prev = curr
         curr = next
-    print_only_loop(grid,loop)
+    isolated_loop = get_isolated_loop(grid,loop)
+    loop_bounds = get_outside_loop_bounds(isolated_loop)
+    inside_count = 0
+    for i in loop_bounds:
+        inside_count += i.count('.')
+    print(inside_count)
     print(len(loop) / 2)
     return
 
@@ -44,7 +50,6 @@ def get_next(curr, prev):
         return (curr[0],curr[1]+1)
 
 def print_only_loop(grid,loop):
-
     for i in range(len(grid)):
         output = ""
         for j in range(len(grid[0])):
@@ -53,6 +58,38 @@ def print_only_loop(grid,loop):
             else:
                 output += "."
         print(output)
+
+def print_grid(grid):
+    for i in range(len(grid)):
+        output = ""
+        for j in range(len(grid[0])):
+            output += grid[i][j]
+        print(output)
+
+def get_isolated_loop(grid, loop):
+    out = []
+    for i in range(len(grid)):
+        out.append([])
+        for j in range(len(grid[0])):
+            if (i,j) in loop:
+                out[i].append(grid[i][j])
+            else:
+                out[i].append('.')
+    return out
+
+def get_outside_loop_bounds(loop):
+    searching = [(0,0)]
+    while len(searching) > 0:
+        if loop[searching[0][0]][searching[0][1]] == '.':
+            loop[searching[0][0]][searching[0][1]] = 'O'
+            for x in [searching[0][0]-1,searching[0][0],searching[0][0]+1]:
+                for y in [searching[0][1]-1,searching[0][1],searching[0][1]+1]:
+                    if x >= 0 and x < len(loop) and y >= 0 and y < len(loop[0]) and (x,y) not in searching:
+                        searching.append((x,y))
+            searching.pop(0)
+        else:
+            searching.pop(0)
+    return loop
 
 def part_two():
     return
