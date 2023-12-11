@@ -23,19 +23,17 @@ def part_one():
     prev = None
     while not loop_finished:
         next = get_next(curr,prev)
-        print(next)
         if next in loop:
             loop_finished = True
             continue
         loop.append(next)
         prev = curr
         curr = next
-
+    print_only_loop(grid,loop)
     print(len(loop) / 2)
     return
 
 def get_next(curr, prev):
-    print(grid[curr[0]][curr[1]])
     if grid[curr[0]][curr[1]] in "S|LJ" and curr[0] != 0 and grid[curr[0]-1][curr[1]] in "S|F7" and prev != (curr[0]-1,curr[1]):
         return (curr[0]-1,curr[1])
     if grid[curr[0]][curr[1]] in "S-J7" and curr[1] != 0 and grid[curr[0]][curr[1]-1] in "S-FL" and prev != (curr[0],curr[1]-1):
@@ -45,6 +43,16 @@ def get_next(curr, prev):
     if grid[curr[0]][curr[1]] in "SLF-" and curr[1] != len(grid)-1 and grid[curr[0]][curr[1]+1] in "S-7J" and prev != (curr[0],curr[1]+1):
         return (curr[0],curr[1]+1)
 
+def print_only_loop(grid,loop):
+
+    for i in range(len(grid)):
+        output = ""
+        for j in range(len(grid[0])):
+            if (i,j) in loop:
+                output += grid[i][j]
+            else:
+                output += "."
+        print(output)
 
 def part_two():
     return
