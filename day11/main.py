@@ -89,6 +89,7 @@ def find_distance(i,j):
 
 
 def main():
+    # part_one()
     part_two()
 
 if __name__ == '__main__':

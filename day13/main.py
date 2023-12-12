@@ -1,9 +1,9 @@
 filename = "input.txt"
+# filename = "test_input.txt"
 
-file = open(filename, "r")
+file = open(filename).readlines()
+file = [f.strip() for f in file]
 
-for line in file:
-    break
 
 def part_one():
     return
@@ -11,8 +11,8 @@ def part_one():
 def part_two():
     return
 
-
 def main():
+    part_one()
     part_two()
 
 if __name__ == '__main__':
