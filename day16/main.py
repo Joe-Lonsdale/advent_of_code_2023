@@ -70,7 +70,6 @@ def get_next_dirs(dir,symbol):
                 case 'u':
                     return 'r'
         case '\\':
-            print(dir)
             match(dir):
                 case 'l':
                     return 'u'
